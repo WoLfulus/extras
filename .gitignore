@@ -1,0 +1,33 @@
+# Generated files
+
+/dist
+
+# OS
+
+Thumbs.db
+.DS_Store
+
+# IDE
+
+/.idea
+/.vscode
+/.ddev
+
+# Admin
+
+!/app/dist/.gitkeep
+/app/dist/**/*
+
+# Dependencies
+
+/vendor
+
+# Artifacts
+
+.phpunit.result.cache
+.php_cs.cache
+
+# Composer
+
+composer.lock
+composer.phar

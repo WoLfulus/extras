@@ -1,0 +1,64 @@
+name: Build and test
+on:
+  push:
+    branches:
+      - 'master'
+      - 'v*.*'
+  pull_request:
+
+jobs:
+
+  build:
+    name: PHP ${{ matrix.php }} checks on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os:
+          - "ubuntu-latest"
+        php:
+          - "7.3"
+          - "7.4"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install environment
+        uses: shivammathur/setup-php@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, mbstring
+          coverage: pcov
+          tools: prestissimo
+
+      - name: Cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --no-suggest
+
+      - name: Lint, static analysis, tests + coverage
+        run: composer run ci:complete
+
+      - name: Coveralls
+        if: success() && matrix.php == '7.4'
+        run: composer run coverage:report
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sonar
+        continue-on-error: true
+        uses: sonarsource/sonarcloud-github-action@master
+        if: success() && matrix.php == '7.4' && github.repository == 'wolfulus/php-template' && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
