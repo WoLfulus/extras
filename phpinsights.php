@@ -64,7 +64,7 @@ return [
     */
 
     'exclude' => [
-        //  'path/to/directory-or-file'
+        'generated',
     ],
 
     'add' => [

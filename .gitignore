@@ -1,6 +1,7 @@
 # Generated files
 
 /dist
+/generated/**/*.php
 
 # OS
 

@@ -1,10 +1,15 @@
 {
-    "name": "wolfulus/php-template",
-    "description": "PHP Template project.",
-    "type": "library",
+    "name": "wolfulus/extras",
+    "description": "Loads composer.json extra from packages.",
+    "type": "composer-plugin",
     "license": "MIT",
     "keywords": [
-      "template"
+      "composer",
+      "extras",
+      "extra",
+      "plugin",
+      "laravel",
+      "loader"
     ],
     "authors": [
         {
@@ -14,10 +19,13 @@
     ],
     "require": {
         "php": ">=7.3",
-        "ext-json": "*"
+        "ext-json": "*",
+        "composer-plugin-api": "^1.1",
+        "nette/php-generator": "^3.3"
     },
     "require-dev": {
         "cedx/coveralls": "^11.2",
+        "composer/composer": "^1.10",
         "friendsofphp/php-cs-fixer": "^2.16",
         "nunomaduro/phpinsights": "^1.14",
         "phpmetrics/phpmetrics": "^2.5",
@@ -29,12 +37,15 @@
     },
     "autoload": {
       "psr-4": {
-        "WoLfulus\\Php\\": "src/"
-      }
+        "WoLfulus\\Extras\\": "src/"
+      },
+      "classmap": [
+        "generated/"
+      ]
     },
     "autoload-dev": {
       "psr-4": {
-        "WoLfulus\\Php\\Tests\\": "tests/"
+        "WoLfulus\\Extras\\Tests\\": "tests/"
       }
     },
     "minimum-stability": "dev",
@@ -72,5 +83,8 @@
       "sort-packages": true,
       "preferred-install": "dist",
       "optimize-autoloader": true
+    },
+    "extra": {
+      "class": "WoLfulus\\Extras\\Composer\\Plugin"
     }
 }
