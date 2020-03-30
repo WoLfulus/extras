@@ -38,14 +38,6 @@ class Package
     }
 
     /**
-     * Gets the original composer package.
-     */
-    public function package(): PackageInterface
-    {
-        return $this->package;
-    }
-
-    /**
      * Gets whether the package uses extras loader or not.
      */
     public function hasRequests(): bool
@@ -69,7 +61,7 @@ class Package
 
         return array_map(function ($request): Request {
             return new Request($this, $request['pattern'], $request['class']);
-        }, array_filter($requests, function (array $request): bool {
+        }, array_filter($requests, static function (array $request): bool {
             return isset($request['pattern'], $request['class']);
         }));
     }

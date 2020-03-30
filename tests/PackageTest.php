@@ -20,4 +20,12 @@ final class PackageTest extends TestCase
         static::assertSame('hello', $generator->name());
         static::assertSame(['some' => 'data'], $generator->data());
     }
+
+    public function testNonArray(): void
+    {
+        $generator = new Package('hello', 'hey');
+
+        static::assertSame('hello', $generator->name());
+        static::assertSame('hey', $generator->data());
+    }
 }

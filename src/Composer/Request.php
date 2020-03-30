@@ -63,12 +63,7 @@ class Request
 
         /** @var Package $package */
         foreach ($packages as $package) {
-            $extras = $package->extras();
-            foreach ($extras as $key => $value) {
-                if (fnmatch($this->pattern(), $key)) {
-                    $generator->addPackage($package->name(), $value);
-                }
-            }
+            $this->addMatches($generator, $package);
         }
 
         return $generator;
@@ -77,8 +72,19 @@ class Request
     /**
      * Gets the output class.
      */
-    protected function class(): string
+    public function class(): string
     {
         return $this->class;
+    }
+
+    protected function addMatches(Generator $generator, Package $package): void
+    {
+        $extras = $package->extras();
+        foreach ($extras as $key => $value) {
+            if (!fnmatch($this->pattern(), $key)) {
+                return;
+            }
+            $generator->addPackage($package->name(), $value);
+        }
     }
 }

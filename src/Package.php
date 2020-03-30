@@ -15,31 +15,27 @@ class Package implements Contracts\Package
     protected $name = '';
 
     /**
-     * @var array
+     * @var mixed
      */
-    protected $data = [];
+    protected $data;
 
     /**
      * Package constructor.
+     *
+     * @param mixed $data
      */
-    public function __construct(string $name, array $data)
+    public function __construct(string $name, $data)
     {
         $this->name = $name;
         $this->data = $data;
     }
 
-    /**
-     * Gets the package name.
-     */
     public function name(): string
     {
         return $this->name;
     }
 
-    /**
-     * Gets the extra contents.
-     */
-    public function data(): array
+    public function data()
     {
         return $this->data;
     }

@@ -16,6 +16,8 @@ interface Package
 
     /**
      * Gets the extra contents.
+     *
+     * @return mixed
      */
-    public function data(): array;
+    public function data();
 }

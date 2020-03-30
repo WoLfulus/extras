@@ -33,13 +33,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * Autoload event.
+     *
+     * @phpcsSuppress
      */
     public function generate(Event $event): void
     {
         $composer = $event->getComposer();
 
         /** @var array<Package> $packages */
-        $packages = array_map(function ($package): Package {
+        $packages = array_map(static function ($package): Package {
             return new Package($package);
         }, array_merge(
             [$event->getComposer()->getPackage()],
@@ -47,19 +49,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         ));
 
         /** @var array<Package> $requesters */
-        $requesters = array_filter($packages, function (Package $package): bool {
-            if (!$package->hasRequests()) {
-                return false;
-            }
-
-            if ($package->hasInvalidRequests()) {
-                $this->writer->write("\n<warning>Package \"{$package->name()}\" has invalid extra requests.</warning>");
-
-                return false;
-            }
-
-            return true;
-        });
+        $requesters = $this->getRequesters($packages);
 
         /** @var Package $requester */
         foreach ($requesters as $requester) {
@@ -75,5 +65,29 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function activate(Composer $composer, IOInterface $interface): void
     {
         $this->writer = $interface;
+    }
+
+    /**
+     * Gets the package requesters.
+     *
+     * @param array<Package> $packages
+     *
+     * @return array<Package>
+     */
+    private function getRequesters(array $packages): array
+    {
+        return array_filter($packages, function (Package $package): bool {
+            if (!$package->hasRequests()) {
+                return false;
+            }
+
+            if ($package->hasInvalidRequests()) {
+                $this->writer->write("\n<warning>Package \"{$package->name()}\" has invalid extra requests.</warning>");
+
+                return false;
+            }
+
+            return true;
+        });
     }
 }
