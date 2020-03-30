@@ -15,6 +15,11 @@ class Package implements Contracts\Package
     protected $name = '';
 
     /**
+     * @var bool
+     */
+    protected $root;
+
+    /**
      * @var mixed
      */
     protected $data;
@@ -24,15 +29,21 @@ class Package implements Contracts\Package
      *
      * @param mixed $data
      */
-    public function __construct(string $name, $data)
+    public function __construct(string $name, bool $root, $data)
     {
         $this->name = $name;
+        $this->root = $root;
         $this->data = $data;
     }
 
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function root(): bool
+    {
+        return $this->root;
     }
 
     public function data()

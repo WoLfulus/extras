@@ -1,0 +1,46 @@
+{
+    "name": "my/project",
+    "description": "User project",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/package",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/plugin1",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/plugin2",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Custom\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "some/library": "dev-master",
+        "some/plugin": "dev-master",
+        "another/plugin": "dev-master"
+    },
+    "extra": {
+        "my-library": {
+            "plugins": [
+                "\\Custom\\Plugins\\CustomPlugin"
+            ]
+        }
+    }
+}

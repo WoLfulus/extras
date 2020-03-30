@@ -15,17 +15,19 @@ final class PackageTest extends TestCase
 {
     public function testImplementation(): void
     {
-        $generator = new Package('hello', ['some' => 'data']);
+        $generator = new Package('hello', false, ['some' => 'data']);
 
         static::assertSame('hello', $generator->name());
+        static::assertFalse($generator->root());
         static::assertSame(['some' => 'data'], $generator->data());
     }
 
     public function testNonArray(): void
     {
-        $generator = new Package('hello', 'hey');
+        $generator = new Package('hello', true, 'hey');
 
         static::assertSame('hello', $generator->name());
+        static::assertTrue($generator->root());
         static::assertSame('hey', $generator->data());
     }
 }

@@ -14,11 +14,33 @@ class Package
     protected $package;
 
     /**
+     * @var bool
+     */
+    protected $root;
+
+    /**
+     * @var array
+     */
+    protected $raw;
+
+    /**
+     * @var array
+     */
+    protected $filtered;
+
+    /**
+     * @var bool
+     */
+    protected $using;
+
+    /**
      * Package constructor.
      */
-    public function __construct(PackageInterface $package)
+    public function __construct(PackageInterface $package, bool $root)
     {
         $this->package = $package;
+        $this->root = $root;
+        $this->initialize();
     }
 
     /**
@@ -27,6 +49,14 @@ class Package
     public function name(): string
     {
         return $this->package->getName();
+    }
+
+    /**
+     * Gets whether the package is the root package.
+     */
+    public function root(): bool
+    {
+        return $this->root;
     }
 
     /**
@@ -42,12 +72,7 @@ class Package
      */
     public function hasRequests(): bool
     {
-        $extras = $this->package->getExtra() ?? [];
-        if (\count(array_keys($extras)) <= 0) {
-            return false;
-        }
-
-        return isset($extras['use-extras']);
+        return $this->using;
     }
 
     /**
@@ -57,13 +82,7 @@ class Package
      */
     public function requests(): array
     {
-        $requests = $this->rawRequests();
-
-        return array_map(function ($request): Request {
-            return new Request($this, $request['pattern'], $request['class']);
-        }, array_filter($requests, static function (array $request): bool {
-            return isset($request['pattern'], $request['class']);
-        }));
+        return $this->filtered;
     }
 
     /**
@@ -71,7 +90,7 @@ class Package
      */
     public function hasInvalidRequests(): bool
     {
-        return \count($this->requests()) !== \count($this->rawRequests());
+        return \count($this->raw) !== \count($this->filtered);
     }
 
     /**
@@ -95,19 +114,30 @@ class Package
     }
 
     /**
-     * Gets the raw config data.
+     * Checks whether a value is an array or not.
      */
-    protected function rawRequests(): array
+    protected function isAssociative(array $value): bool
     {
-        if (!$this->hasRequests()) {
-            return [];
-        }
+        return $value !== [] && array_keys($value) !== range(0, \count($value) - 1);
+    }
 
-        $requests = $this->extras()['use-extras'];
-        if ($requests !== [] && array_keys($requests) !== range(0, \count($requests) - 1)) {
+    /**
+     * Initializes the variables.
+     */
+    private function initialize(): void
+    {
+        $extras = $this->extras();
+        $this->using = isset($extras['use-extras']);
+
+        $requests = $extras['use-extras'] ?? [];
+        if ($this->isAssociative($requests)) {
             $requests = [$requests];
         }
 
-        return $requests;
+        $this->filtered = array_map(function ($request): Request {
+            return new Request($this, $request['pattern'], $request['class']);
+        }, array_filter($requests, static function (array $request): bool {
+            return isset($request['pattern'], $request['class']);
+        }));
     }
 }

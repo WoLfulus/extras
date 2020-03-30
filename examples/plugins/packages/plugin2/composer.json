@@ -1,0 +1,29 @@
+{
+    "name": "another/plugin",
+    "description": "Another plugin",
+    "autoload": {
+        "psr-4": {
+            "Another\\Plugins\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../package",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "some/library": "dev-master"
+    },
+    "extra": {
+        "my-library": {
+            "plugins": [
+                "\\Another\\Plugins\\GoodbyePlugin",
+                "\\Another\\Plugins\\OyPlugin"
+            ]
+        }
+    }
+}

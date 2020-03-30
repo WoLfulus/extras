@@ -15,6 +15,11 @@ interface Package
     public function name(): string;
 
     /**
+     * Gets whether the package is the root package.
+     */
+    public function root(): bool;
+
+    /**
      * Gets the extra contents.
      *
      * @return mixed

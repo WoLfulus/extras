@@ -22,7 +22,7 @@ final class GeneratorTest extends TestCase
         $code = $generator->pattern('fruit')
             ->package('hey/there')
             ->className('Hello\\World')
-            ->addPackage('hello1/world', ['hello' => 'world'])
+            ->addPackage('hello1/world', false, ['hello' => 'world'])
             ->generate()
         ;
 
@@ -38,7 +38,7 @@ final class GeneratorTest extends TestCase
         $code = $generator->pattern('fruit')
             ->package('hey/there')
             ->className('World')
-            ->addPackage('hello1/world', ['hello' => 'world'])
+            ->addPackage('hello1/world', false, ['hello' => 'world'])
             ->generate()
         ;
 

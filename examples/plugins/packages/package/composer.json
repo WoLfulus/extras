@@ -1,0 +1,17 @@
+{
+    "name": "some/library",
+    "autoload": {
+        "psr-4": {
+            "Library\\": "src/"
+        }
+    },
+    "extra": {
+        "use-extras": {
+            "pattern": "my-library",
+            "class": "Library\\Plugins"
+        }
+    },
+    "require": {
+        "wolfulus/extras": "*"
+    }
+}

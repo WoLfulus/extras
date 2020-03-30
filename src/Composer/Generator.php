@@ -37,9 +37,14 @@ class Generator
     private $package = '';
 
     /**
-     * @var array
+     * @var array<string>
      */
     private $packages = [];
+
+    /**
+     * @var null|string
+     */
+    private $root;
 
     /**
      * Sets the originating package.
@@ -83,10 +88,18 @@ class Generator
 
     /**
      * Adds a package to the list.
+     *
+     * @param mixed $value
+     *
+     * @return Generator
      */
-    public function addPackage(string $package, array $value): self
+    public function addPackage(string $package, bool $root, $value): self
     {
-        $this->packages[] = (new Dumper())->format('new \\WoLfulus\\Extras\\Package(?, ?)', $package, $value);
+        $code = (new Dumper())->format('new \\WoLfulus\\Extras\\Package(?, ?, ?)', $package, $root, $value);
+        $this->packages[] = $code;
+        if ($root) {
+            $this->root = $code;
+        }
 
         return $this;
     }
@@ -132,16 +145,16 @@ class Generator
             $file->addNamespace($this->namespace)->addClass($this->class) :
             $file->addClass($this->class);
 
-        $cls->addImplement('\\'.Repository::class);
-        $cls->addComment($this->class.' class.');
-
-        $cls->addProperty('packages')
-            ->setProtected()
-            ->setNullable()
-            ->setStatic()
+        $cls->addImplement('\\'.Repository::class)->addComment($this->class.' class.');
+        $cls->addProperty('packages')->setProtected()->setNullable()->setStatic()->setInitialized()
             ->addComment('@var null|array<\\'.Package::class.">\n")
-            ->setInitialized()
         ;
+
+        if ($this->root !== null) {
+            $cls->addProperty('root')->setProtected()->setNullable()->setStatic()->setInitialized()
+                ->addComment('@var \\'.Package::class."\n")
+            ;
+        }
 
         $this->addMethods($cls);
     }
@@ -152,14 +165,19 @@ class Generator
     private function addMethods(ClassType $cls): void
     {
         $packageList = "\t".implode(",\n\t", $this->packages);
-
         $get = $cls->addMethod('get')->setPublic()->setStatic();
         $get->setReturnType('array')
-            ->addComment("Gets all packages with an extra matching '{$this->key}' key.")
-            ->addComment('')
+            ->addComment("Gets all packages with an extra matching '{$this->key}' key.\n")
             ->addComment('@return array<\\WoLfulus\\Extras\\Contracts\\Package>')
         ;
-
         $get->addBody("return self::\$packages = self::\$packages ?? [\n{$packageList}\n];\n");
+        $rootMethod = $cls->addMethod('root')->setPublic()->setStatic();
+        $rootMethod->setReturnType('\\'.Package::class)->setReturnNullable()->addComment('Gets the root package data.');
+        if ($this->root === null) {
+            $rootMethod->addBody('return null;');
+
+            return;
+        }
+        $rootMethod->addBody("return self::\$root = self::\$root ?? {$this->root};");
     }
 }

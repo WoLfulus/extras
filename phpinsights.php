@@ -15,6 +15,7 @@ use SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
@@ -65,6 +66,7 @@ return [
     */
 
     'exclude' => [
+        'examples',
         'generated',
     ],
 
@@ -87,6 +89,7 @@ return [
         UselessFunctionDocCommentSniff::class,
         SpaceAfterNotSniff::class,
         UnusedParameterSniff::class,
+        NullTypeHintOnLastPositionSniff::class, // Conflicts with php-cs-fixer
     ],
 
     'config' => [

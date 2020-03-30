@@ -42,11 +42,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         /** @var array<Package> $packages */
         $packages = array_map(static function ($package): Package {
-            return new Package($package);
-        }, array_merge(
-            [$event->getComposer()->getPackage()],
-            $composer->getRepositoryManager()->getLocalRepository()->getPackages()
-        ));
+            return new Package($package, false);
+        }, $composer->getRepositoryManager()->getLocalRepository()->getPackages());
+
+        array_unshift($packages, new Package($event->getComposer()->getPackage(), true));
 
         /** @var array<Package> $requesters */
         $requesters = $this->getRequesters($packages);

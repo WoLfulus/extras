@@ -1,0 +1,28 @@
+{
+    "name": "some/plugin",
+    "description": "Some plugins",
+    "autoload": {
+        "psr-4": {
+            "Some\\Plugins\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../package",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "some/library": "dev-master"
+    },
+    "extra": {
+        "my-library": {
+            "plugins": [
+                "\\Some\\Plugins\\HelloPlugin"
+            ]
+        }
+    }
+}

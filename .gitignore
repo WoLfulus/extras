@@ -3,6 +3,11 @@
 /dist
 /generated/**/*.php
 
+# Examples
+
+/examples/**/vendor/
+/examples/**/composer.lock
+
 # OS
 
 Thumbs.db

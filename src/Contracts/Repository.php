@@ -11,6 +11,11 @@ interface Repository
 {
     /**
      * Gets extra contents.
+     */
+    public static function root(): ?Package;
+
+    /**
+     * Gets extra contents.
      *
      * @return array<Package>
      */
