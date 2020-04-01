@@ -19,14 +19,14 @@ class Package
     protected $root;
 
     /**
-     * @var array
+     * @var int
      */
-    protected $raw;
+    protected $total;
 
     /**
      * @var array
      */
-    protected $filtered;
+    protected $requests;
 
     /**
      * @var bool
@@ -82,7 +82,7 @@ class Package
      */
     public function requests(): array
     {
-        return $this->filtered;
+        return $this->requests;
     }
 
     /**
@@ -90,7 +90,7 @@ class Package
      */
     public function hasInvalidRequests(): bool
     {
-        return \count($this->raw) !== \count($this->filtered);
+        return $this->total !== \count($this->requests);
     }
 
     /**
@@ -129,14 +129,15 @@ class Package
         $extras = $this->extras();
         $this->using = isset($extras['use-extras']);
 
-        $requests = $extras['use-extras'] ?? [];
-        if ($this->isAssociative($requests)) {
-            $requests = [$requests];
+        $extras = $extras['use-extras'] ?? [];
+        if ($this->isAssociative($extras)) {
+            $extras = [$extras];
         }
 
-        $this->filtered = array_map(function ($request): Request {
+        $this->total = \count($extras);
+        $this->extras = array_map(function ($request): Request {
             return new Request($this, $request['pattern'], $request['class']);
-        }, array_filter($requests, static function (array $request): bool {
+        }, array_filter($extras, static function (array $request): bool {
             return isset($request['pattern'], $request['class']);
         }));
     }
