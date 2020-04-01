@@ -135,7 +135,7 @@ class Package
         }
 
         $this->total = \count($extras);
-        $this->extras = array_map(function ($request): Request {
+        $this->requests = array_map(function ($request): Request {
             return new Request($this, $request['pattern'], $request['class']);
         }, array_filter($extras, static function (array $request): bool {
             return isset($request['pattern'], $request['class']);
