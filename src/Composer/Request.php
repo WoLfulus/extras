@@ -82,7 +82,7 @@ class Request
         $extras = $package->extras();
         foreach ($extras as $key => $value) {
             if (!fnmatch($this->pattern(), $key)) {
-                return;
+                continue;
             }
             $generator->addPackage($package->name(), $package->root(), $value);
         }
