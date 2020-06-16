@@ -29,9 +29,10 @@ class Package implements Contracts\Package
      *
      * @param mixed $data
      */
-    public function __construct(string $name, bool $root, $data)
+    public function __construct(string $name, string $version, bool $root, $data)
     {
         $this->name = $name;
+        $this->version = $version;
         $this->root = $root;
         $this->data = $data;
     }
@@ -39,6 +40,11 @@ class Package implements Contracts\Package
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function version(): string
+    {
+        return $this->version;
     }
 
     public function root(): bool

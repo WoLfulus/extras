@@ -15,6 +15,11 @@ interface Package
     public function name(): string;
 
     /**
+     * Gets the package version.
+     */
+    public function version(): string;
+
+    /**
      * Gets whether the package is the root package.
      */
     public function root(): bool;

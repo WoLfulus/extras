@@ -93,9 +93,9 @@ class Generator
      *
      * @return Generator
      */
-    public function addPackage(string $package, bool $root, $value): self
+    public function addPackage(string $package, string $version, bool $root, $value): self
     {
-        $code = (new Dumper())->format('new \\WoLfulus\\Extras\\Package(?, ?, ?)', $package, $root, $value);
+        $code = (new Dumper())->format('new \\WoLfulus\\Extras\\Package(?, ?, ?, ?)', $package, $version, $root, $value);
         $this->packages[] = $code;
         if ($root) {
             $this->root = $code;

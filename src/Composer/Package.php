@@ -52,6 +52,14 @@ class Package
     }
 
     /**
+     * Gets the package name.
+     */
+    public function version(): string
+    {
+        return $this->package->getVersion();
+    }
+
+    /**
      * Gets whether the package is the root package.
      */
     public function root(): bool

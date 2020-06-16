@@ -84,7 +84,7 @@ class Request
             if (!fnmatch($this->pattern(), $key)) {
                 continue;
             }
-            $generator->addPackage($package->name(), $package->root(), $value);
+            $generator->addPackage($package->name(), $package->version(), $package->root(), $value);
         }
     }
 }
