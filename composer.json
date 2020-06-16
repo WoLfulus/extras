@@ -25,14 +25,7 @@
     },
     "require-dev": {
         "cedx/coveralls": "^11.2",
-        "composer/composer": "^1.10",
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "nunomaduro/phpinsights": "^1.14",
-        "phpmetrics/phpmetrics": "^2.5",
-        "phpstan/extension-installer": "^1.0",
-        "phpstan/phpstan": "^0.12",
-        "phpstan/phpstan-phpunit": "^0.12",
-        "phpstan/phpstan-strict-rules": "^0.12",
+        "composer/composer": "^2.0",
         "phpunit/phpunit": "^9"
     },
     "autoload": {
@@ -51,30 +44,11 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-      "format": "php-cs-fixer --ansi fix",
-      "insights": "phpinsights -v",
-      "metrics": "phpmetrics --report-html=./dist/metrics ./src",
-      "lint:php-cs-fixer": "php-cs-fixer --ansi fix --diff --dry-run",
-      "lint:phpstan": "phpstan --ansi --memory-limit=2G analyse",
-      "lint": [
-        "@lint:php-cs-fixer",
-        "@lint:phpstan"
-      ],
       "ci": [
-        "@lint",
         "@test"
       ],
       "ci:complete": [
-        "@lint",
-        "@insights",
-        "@metrics",
         "@test"
-      ],
-      "check": [
-        "@format",
-        "@lint",
-        "@metrics",
-        "@insights"
       ],
       "test": "phpunit --colors=always",
       "coverage:report": "coveralls ./dist/coverage.xml"
