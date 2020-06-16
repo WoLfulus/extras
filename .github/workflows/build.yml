@@ -58,7 +58,7 @@ jobs:
       - name: Sonar
         continue-on-error: true
         uses: sonarsource/sonarcloud-github-action@master
-        if: success() && matrix.php == '7.4' && github.repository == 'wolfulus/php-template' && github.event_name == 'push'
+        if: success() && matrix.php == '7.4' && github.repository == 'wolfulus/extras' && github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
