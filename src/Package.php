@@ -15,6 +15,11 @@ class Package implements Contracts\Package
     protected $name = '';
 
     /**
+     * @var string
+     */
+    protected $version = '';
+
+    /**
      * @var bool
      */
     protected $root;
