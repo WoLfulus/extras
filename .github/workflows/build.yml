@@ -44,7 +44,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --no-interaction --no-progress --no-suggest
+        run: composer install --no-interaction --no-progress --no-suggest && composer self-update --snapshot
 
       - name: Lint, static analysis, tests + coverage
         run: composer run ci:complete
